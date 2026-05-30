@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 public class Movement : MonoBehaviour
 {
-    [SerializeField] GameObject mainCamera;
+    [SerializeField] Transform myCam;
     [SerializeField] float speed = 1.0f;
     Vector2 vector2;
     Vector2 moveInput;
@@ -23,7 +23,7 @@ public class Movement : MonoBehaviour
     {
         Vector3 direction = new Vector3(moveInput.x, 0, moveInput.y);
         transform.Translate(direction * speed * Time.deltaTime);
-        transform.Rotate(0, lookInput.x * 0.lf, 0);
-        MainCamera.Rotate (-lookInput.y * 0.1f, 0, 0);
+        transform.Rotate(0, lookInput.x * 0.1f, 0);
+        myCam.Rotate (-lookInput.y * 0.1f, 0, 0);
     }
 }
