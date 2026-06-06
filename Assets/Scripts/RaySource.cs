@@ -11,9 +11,9 @@ public class RaySource : MonoBehaviour
             if(Physics.Raycast(ray, out RaycastHit hitInfo))
             {
                 Debug.Log(hitInfo.collider.name);
-                if(hitInfo.collider.TryGetComponent<TestCube>(out TestCube testCube))
+                if(hitInfo.collider.TryGetComponent<Enemy>(out Enemy enemy))
                 {
-                    testCube.Action();
+                    enemy.OnTakeDamage();
                 }
             }
         }
