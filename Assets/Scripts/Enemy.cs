@@ -9,17 +9,34 @@ public class Enemy : MonoBehaviour
     Transform target;
     [SerializeField] int hp = 3;
     [SerializeField] int damage = 1;
+    bool attackCooldown = false;
 
-    void Start()
+    void Awake()
     {
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
+    }
+
+    void Start()
+    {
+        agent.updatePosition = false;
+        agent.updateRotation = true;
         target = FindAnyObjectByType<MovementController>().transform;
+    }
+
+    void OnAnimatorMove()
+    {
+        Vector3 rootPosition = animator.rootPosition;
+        rootPosition.y = agent.nextPosition.y;
+        transform.position = rootPosition;
+        //transform.rotation = animator.rootRotation;
+        agent.nextPosition = rootPosition;
     }
 
     void Update()
     {
         agent.destination = target.position;
+        animator.SetFloat("Velocity", agent.desiredVelocity.magnitude);
     }
 
     public void OnTakeDamage(int damage = 1)
@@ -34,17 +51,18 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerStay(Collider other)
     {
-        if (collision.gameObject.TryGetComponent<PlayerHP>(out PlayerHP player))
+        if (!attackCooldown && other.TryGetComponent<PlayerHP>(out PlayerHP player))
         {
+            attackCooldown=true;
             animator.SetTrigger("Attack");
+            player.OnTakeDamage();
         }
     }
 
-    public void Attack()
+    public void ResetAttack()
     {
-        PlayerHP playerHP = target.GetComponent<PlayerHP>();
-        playerHP.OnTakeDamage();
+        attackCooldown = false;
     }
 }
