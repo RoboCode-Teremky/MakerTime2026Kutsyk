@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
+[RequireComponent(typeof(Animator), typeof(NavMeshAgent))]
 public class Enemy : MonoBehaviour
 {
     Animator animator;

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(CharacterController))]
 public class MovementController : MonoBehaviour
 {
     [SerializeField] float speed = 1.0f;
